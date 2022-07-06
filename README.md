@@ -17,8 +17,9 @@ examples that can be cloned as needed.
   * Java 15.0.1
   * Apache Maven 3.6.3
 
-The code has been structured as a standard Maven project which requires Maven 
-and a JDK to be installed. A quick web search will help, but if not 
+The code is structured as a standard Maven project which requires Maven and a 
+JDK to be installed. A quick web search will help, alternatively
+[Oracle](https://www.java.com/en/download/) and 
 [Apache](https://maven.apache.org/install.html) should guide you through the
 install.
 
@@ -40,5 +41,5 @@ This code has the following points of interest:
   * BaseFXML is styled with CSS.
   * BaseFXML is structured as an MVC project (FXML being the Video component).
   * Multi stage initialization minimizes the need for null checks. 
-  * Data persistence is provided by the Serializable DataStore Object.
+  * Data persistence is provided by the Serializable DataStore object.
   * The GUI is implemented in FXML using SceneBuilder.
