@@ -26,7 +26,7 @@ favourite IDE.
 ## Cloning and Running
 The following commands clone and execute the code:
 
-  git clone https://github.com/PhilLockett/BaseFXML.git
+	git clone https://github.com/PhilLockett/BaseFXML.git
 	cd BaseFXML/
 	mvn clean javafx:run
 
