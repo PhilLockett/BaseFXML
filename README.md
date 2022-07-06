@@ -1,7 +1,6 @@
 # BaseFXML
 
-'BaseFXML' is a JavaFX application 'framework' with example controls, that uses
-Maven, FXML and CSS.
+'BaseFXML' is a JavaFX application 'framework' that uses Maven, FXML and CSS.
 
 ## Overview
 This project has been set up as a Maven project that uses JavaFX, FXML and 
@@ -27,7 +26,7 @@ favourite IDE.
 ## Cloning and Running
 The following commands clone and execute the code:
 
-    git clone https://github.com/PhilLockett/BaseFXML.git
+  git clone https://github.com/PhilLockett/BaseFXML.git
 	cd BaseFXML/
 	mvn clean javafx:run
 
