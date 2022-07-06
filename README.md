@@ -7,12 +7,12 @@ This project has been set up as a Maven project that uses JavaFX, FXML and
 CSS to render the GUI. Maven can be run from the command line as shown below.
 Maven resolves dependencies and builds the application independently of an IDE.
 
-The intention of this application is to provid a 'framework' from which other
+The intention of this application is to provide a 'framework' from which other
 applications can be derived. It includes a number of different controls as 
 examples that can be cloned as needed.
 
 ## Dependencies
-BaseFXML is dependent on the following:
+'BaseFXML' is dependent on the following:
 
   * Java 15.0.1
   * Apache Maven 3.6.3
@@ -20,8 +20,10 @@ BaseFXML is dependent on the following:
 The code has been structured as a standard Maven project which requires Maven 
 and a JDK to be installed. A quick web search will help, but if not 
 [Apache](https://maven.apache.org/install.html) should guide you through the
-install. Also [OpenJFX](https://openjfx.io/openjfx-docs/) can help set up your 
-favourite IDE.
+install.
+
+Also [OpenJFX](https://openjfx.io/openjfx-docs/) can help set up your 
+favourite IDE to be JavaFX compatible, however, Maven does not require this.
 
 ## Cloning and Running
 The following commands clone and execute the code:
@@ -34,9 +36,9 @@ The following commands clone and execute the code:
 This code has the following points of interest:
 
   * BaseFXML is a Maven project that uses JavaFX.
-  * BaseFXML provides multiple different types of JavaFX controls.
+  * BaseFXML provides multiple examples of different types of JavaFX controls.
   * BaseFXML is styled with CSS.
   * BaseFXML is structured as an MVC project (FXML being the Video component).
   * Multi stage initialization minimizes the need for null checks. 
-  * Data persistence is provided by the DataStore Object.
-  * The GUI was developed using SceneBuilder utilizing FXML.
+  * Data persistence is provided by the Serializable DataStore Object.
+  * The GUI is implemented in FXML using SceneBuilder.
