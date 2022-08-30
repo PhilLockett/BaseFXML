@@ -55,65 +55,74 @@ public class DataStore implements Serializable {
     private Double myDouble;
     private Integer day;
 
+
+
+    /************************************************************************
+     * Support code for the Initialization of the DataStore.
+     */
+
     public DataStore() {
     }
 
-    /**
-     * Data exchange from the model to this DataStore.
-     * @param model contains the data.
-     * @return true if data successfully pulled from the model, false otherwise.
-     */
-    public boolean pull(Model model) {
-        boolean success = true;
+    public String getMyText() { return myText; }
+    public void setMyText(String myText) { this.myText = myText; }
+    public String getMyBigText() { return myBigText; }
+    public void setMyBigText(String myBigText) { this.myBigText = myBigText; }
 
-        myText = model.getMyText();
-        myBigText = model.getMyBigText();
+    public Boolean getFirstCheck() { return firstCheck; }
+    public void setFirstCheck(Boolean firstCheck) { this.firstCheck = firstCheck; }
+    public Boolean getSecondCheck() { return secondCheck; }
+    public void setSecondCheck(Boolean secondCheck) { this.secondCheck = secondCheck; }
+    public Boolean getThirdCheck() { return thirdCheck; }
+    public void setThirdCheck(Boolean thirdCheck) { this.thirdCheck = thirdCheck; }
 
-        firstCheck = model.isFirstCheck();
-        secondCheck = model.isSecondCheck();
-        thirdCheck = model.isThirdCheck();
+    public boolean isFirstRadio() { return radioSelection == 1; }
+    public void setFirstRadio() { radioSelection =  1; }
+    public boolean isSecondRadio() { return radioSelection == 2; }
+    public void setSecondRadio() { radioSelection =  2; }
+    public boolean isThirdRadio() { return radioSelection == 3; }
+    public void setThirdRadio() { radioSelection =  3; }
 
-        radioSelection = mapRadioSelection(model);
-
-        monthIndex = model.getMonthIndex();
-        bestDayIndex = model.getBestDayIndex();
-        red = model.getMyColour().getRed();
-        green = model.getMyColour().getGreen();
-        blue = model.getMyColour().getBlue();
-
-        myInteger = model.getInteger();
-        myDouble = model.getDouble();
-        day = model.getDayIndex();
-
-        return success;
+    public Integer getMonthIndex() { return monthIndex; }
+    public void setMonthIndex(Integer monthIndex) { this.monthIndex = monthIndex; }
+    public Integer getBestDayIndex() { return bestDayIndex; }
+    public void setBestDayIndex(Integer bestDayIndex) { this.bestDayIndex = bestDayIndex; }
+    public Color getMyColour() { return Color.color(red, green, blue); }
+    public void setMyColour(Color colour) {
+        red = colour.getRed();
+        green = colour.getGreen();
+        blue = colour.getBlue();
     }
 
-    /**
-     * Data exchange from this DataStore to the model.
-     * @param model contains the data.
-     * @return true if data successfully pushed to the model, false otherwise.
+    public Integer getMyInteger() { return myInteger; }
+    public void setMyInteger(Integer myInteger) { this.myInteger = myInteger; }
+    public Double getMyDouble() { return myDouble; }
+    public void setMyDouble(Double myDouble) { this.myDouble = myDouble; }
+    public Integer getDay() { return day; }
+    public void setDay(Integer day) { this.day = day; }
+
+
+
+    /************************************************************************
+     * Support code for debug.
      */
-    public boolean push(Model model) {
-        boolean success = true;
 
-        model.setMyText(myText);
-        model.setMyBigText(myBigText);
-
-        model.setFirstCheck(firstCheck);
-        model.setSecondCheck(secondCheck);
-        model.setThirdCheck(thirdCheck);
-
-        unmapRadioSelection(model);
-
-        model.setMonthIndex(monthIndex);
-        model.setBestDayIndex(bestDayIndex);
-        model.setMyColour(Color.color(red, green, blue));
-
-        model.setInteger(myInteger);
-        model.setDouble(myDouble);
-        model.setDayIndex(day);
-
-        return success;
+     /**
+      * Print data store on the command line.
+      */
+      public void dump() {
+        System.out.println("myText = " + myText);
+        System.out.println("myBigText = " + myBigText);
+        System.out.println("firstCheck = " + firstCheck);
+        System.out.println("secondCheck = " + secondCheck);
+        System.out.println("thirdCheck = " + thirdCheck);
+        System.out.println("radioSelection = " + radioSelection);
+        System.out.println("monthIndex = " + monthIndex);
+        System.out.println("bestDayIndex = " + bestDayIndex);
+        System.out.println("Colour = RGB(" + red + ", " + green + ", " + blue + ")");
+        System.out.println("myInteger = " + myInteger);
+        System.out.println("myDouble = " + myDouble);
+        System.out.println("day = " + day);
     }
 
 
@@ -123,24 +132,17 @@ public class DataStore implements Serializable {
      */
 
     /**
-     * Static method that instantiates a DataStore, populates it from the 
-     * model and writes it to disc.
-     * @param model contains the data.
+     * Static method that receives a populated DataStore and writes it to disc.
+     * @param dataStore contains the data.
+     * @param settingsFile path of the settings data file.
      * @return true if data successfully written to disc, false otherwise.
      */
-    public static boolean writeData(Model model) {
+    public static boolean writeData(DataStore dataStore, String settingsFile) {
         boolean success = false;
-
-        DataStore dataStore = new DataStore();
-        if (!dataStore.pull(model)) {
-            dataStore.dump();
-
-            return false;
-        }
 
         ObjectOutputStream objectOutputStream;
         try {
-            objectOutputStream = new ObjectOutputStream(new FileOutputStream(model.getSettingsFile()));
+            objectOutputStream = new ObjectOutputStream(new FileOutputStream(settingsFile));
 
             objectOutputStream.writeObject(dataStore);
             success = true;
@@ -152,86 +154,30 @@ public class DataStore implements Serializable {
         return success;
     }
 
+
     /**
      * Static method that instantiates a DataStore, populates it from disc 
-     * and writes it to the model.
-     * @param model contains the data.
-     * @return true if data successfully read from disc, false otherwise.
+     * and returns it.
+     * @param settingsFile path of the settings data file.
+     * @return a populated DataStore if data successfully read from disc, null otherwise.
      */
-    public static boolean readData(Model model) {
-        boolean success = false;
+    public static DataStore readData(String settingsFile) {
+        DataStore dataStore = null;
 
         ObjectInputStream objectInputStream;
         try {
-            objectInputStream = new ObjectInputStream(new FileInputStream(model.getSettingsFile()));
+            objectInputStream = new ObjectInputStream(new FileInputStream(settingsFile));
 
-            DataStore dataStore = (DataStore)objectInputStream.readObject();
-            success = dataStore.push(model);
-            dataStore.dump();
-
+            dataStore = (DataStore)objectInputStream.readObject();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
 
-        return success;
+        return dataStore;
     }
 
-
-    /************************************************************************
-     * Support code for mapping data.
-     */
-
-    /**
-     * Maps an integer to the radio button selection.
-     * @param model contains the data.
-     */
-    private void unmapRadioSelection(Model model) {
-        if (radioSelection == 1)
-            model.setFirstRadio();
-        else if (radioSelection == 2)
-            model.setSecondRadio();
-        else
-            model.setThirdRadio();
-    }
-
-    /**
-     * Maps the radio button selection to an integer.
-     * @param model contains the data.
-     */
-    private int mapRadioSelection(Model model) {
-        if (model.isFirstRadio())
-            return 1;
-
-        if (model.isSecondRadio())
-            return 2;
-
-        return 3;
-    }
-
-
-    /************************************************************************
-     * Support code for debug.
-     */
-
-     /**
-      * Print data store on the command line.
-      */
-    private void dump() {
-        // System.out.println("myText = " + myText);
-        // System.out.println("myBigText = " + myBigText);
-        // System.out.println("firstCheck = " + firstCheck);
-        // System.out.println("secondCheck = " + secondCheck);
-        // System.out.println("thirdCheck = " + thirdCheck);
-        // System.out.println("radioSelection = " + radioSelection);
-        // System.out.println("monthIndex = " + monthIndex);
-        // System.out.println("bestDayIndex = " + bestDayIndex);
-        // System.out.println("Colour = RGB(" + red + ", " + green + ", " + blue + ")");
-        // System.out.println("myInteger = " + myInteger);
-        // System.out.println("myDouble = " + myDouble);
-        // System.out.println("day = " + day);
-    }
 
 }
 

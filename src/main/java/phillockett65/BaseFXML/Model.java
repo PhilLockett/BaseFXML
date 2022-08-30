@@ -80,7 +80,7 @@ public class Model {
         initializeSpinners();
         initializeStatusLine();
 
-        if (!DataStore.readData(this))
+        if (!readData())
             defaultSettings();
     }
 
@@ -112,6 +112,89 @@ public class Model {
         setMonthIndex(6);
         setBestDayIndex(0);
         setMyColour(Color.RED);
+    }
+
+
+
+    /************************************************************************
+     * Support code for state persistence.
+     */
+
+    /**
+     * Instantiate a DataStore, populate it with data and save it to disc.
+     * @return true if data successfully written to disc, false otherwise.
+     */
+    public boolean writeData() {
+        DataStore data = new DataStore();
+
+        data.setMyText(getMyText());
+        data.setMyBigText(getMyBigText());
+
+        data.setFirstCheck(isFirstCheck());
+        data.setSecondCheck(isSecondCheck());
+        data.setThirdCheck(isThirdCheck());
+
+        if (isFirstRadio())
+            data.setFirstRadio();
+        else
+        if (isSecondRadio())
+            data.setSecondRadio();
+        else
+        if (isThirdRadio())
+            data.setThirdRadio();
+
+        data.setMonthIndex(getMonthIndex());
+        data.setBestDayIndex(getBestDayIndex());
+        data.setMyColour(getMyColour());
+
+        data.setMyInteger(getInteger());
+        data.setMyDouble(getDouble());
+        data.setDay(getDayIndex());
+    
+        if (!DataStore.writeData(data, getSettingsFile())) {
+            data.dump();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get a DataStore populated with data previously stored to disc and update
+     * the model with the data.
+     * @return true if the model is successfully updated, false otherwise.
+     */
+    public boolean readData() {
+        DataStore data = DataStore.readData(getSettingsFile());
+        if (data == null)
+            return false;
+
+        setMyText(data.getMyText());
+        setMyBigText(data.getMyBigText());
+
+        setFirstCheck(data.getFirstCheck());
+        setSecondCheck(data.getSecondCheck());
+        setThirdCheck(data.getThirdCheck());
+
+        if (data.isFirstRadio())
+            setFirstRadio();
+        else
+        if (data.isSecondRadio())
+            setSecondRadio();
+        else
+        if (data.isThirdRadio())
+            setThirdRadio();
+
+        setMonthIndex(data.getMonthIndex());
+        setBestDayIndex(data.getBestDayIndex());
+        setMyColour(data.getMyColour());
+    
+        setInteger(data.getMyInteger());
+        setDouble(data.getMyDouble());
+        setDayIndex(data.getDay());
+    
+        return true;
     }
 
 

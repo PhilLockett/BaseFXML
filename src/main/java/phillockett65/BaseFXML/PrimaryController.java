@@ -89,7 +89,7 @@ public class PrimaryController {
      * Save the current state to disc, called by the application on shut down.
      */
     public void saveState() {
-        DataStore.writeData(model);
+        model.writeData();
     }
 
     /**
