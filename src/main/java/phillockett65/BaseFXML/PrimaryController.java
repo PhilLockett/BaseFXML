@@ -1,4 +1,4 @@
-/*  BaseFXML - a JavaFX based playing card image generator.
+/*  BaseFXML - a JavaFX application 'framework' that uses Maven, FXML and CSS.
  *
  *  Copyright 2022 Philip Lockett.
  *
